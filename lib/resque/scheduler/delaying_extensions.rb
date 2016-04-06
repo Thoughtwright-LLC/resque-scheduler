@@ -167,7 +167,7 @@ module Resque
           while index >= 0
             payload = Resque.redis.lindex(job, index)
             decoded_payload = decode(payload)
-            job_class = decoded_payload['class']
+            job_class = decoded_payload.nil? ? nil : decoded_payload['class']
             relevant_class = (klass.nil? || klass.to_s == job_class)
             if relevant_class && yield(decoded_payload['args'])
               removed = remove_delayed_job(payload)
